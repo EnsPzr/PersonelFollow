@@ -1,4 +1,15 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).ready(function () {
+    $("#activityDate").on('change',
+        function() {
+            var $form = $(this).closest('form');
+            $form.submit();
+        });
+});
 
-// Write your JavaScript code.
+function deletePost(id) {
+    var ask = window.confirm("Aktivitenizin aktiflikten çıkartılacak. Onaylıyor Musunuz?");
+    if (ask) {
+        window.location.href = "/Account/Delete/" + id;
+
+    }
+}

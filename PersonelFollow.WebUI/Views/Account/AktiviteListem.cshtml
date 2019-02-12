@@ -1,0 +1,79 @@
+﻿@model IEnumerable<PersonelFollow.WebUI.Models.NewAndEditActivityViewModel>
+
+@{
+    ViewData["Title"] = "Aktivite Listem";
+}
+@if (TempData["hata"] != null)
+{
+    <div class="col-md-12 col-sm-12 text-center">
+        <div class="alert alert-danger">
+            @TempData["hata"]
+        </div>
+    </div>
+}
+@if (TempData["basari"] != null)
+{
+    <div class="col-md-12 col-sm-12 text-center">
+        <div class="alert alert-success">
+            @TempData["basari"]
+        </div>
+    </div>
+}
+<div class="col-md-12 col-sm-12">
+    <h1 class="text-center">Aktivite Listem</h1>
+    <p>
+        <a asp-action="Yeni">Yeni Aktivite</a>
+    </p>
+    <table class="table table-hover">
+        <thead>
+            <tr class="text-center">
+                <th>
+                    @Html.DisplayNameFor(model => model.ActivityName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsNumeric)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="text-center">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActivityName)
+                    </td>
+                    <td>
+                        @if (item.IsNumeric)
+                        {
+                            <b>Sayısal Değer</b>
+                        }
+                        else
+                        {
+                            <b>Yapıldı Yapılmadı</b>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <b>Aktif</b>
+                        }
+                        else
+                        {
+                            <b>Aktif Değil</b>
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Düzenle", "Duzenle", new {  id=item.ActivityId  }) |
+                        <a href="#" onclick="deletePost(@item.ActivityId)">Devre Dışı Bırak</a>
+                        @*@Html.ActionLink("Devre Dışı Bırak", null,null, new { onclick = "deletePost(" +item.ActivityId+");" })*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

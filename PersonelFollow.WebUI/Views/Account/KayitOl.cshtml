@@ -1,0 +1,61 @@
+﻿@model PersonelFollow.WebUI.Models.UserRegisterViewModel
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+@if (TempData["hata"] != null)
+{
+    <div class="col-md-12 col-sm-12 text-center">
+        <div class="alert alert-danger">
+            @TempData["hata"]
+        </div>
+    </div>
+}
+@if (TempData["basari"] != null)
+{
+    <div class="col-md-12 col-sm-12 text-center">
+        <div class="alert alert-success">
+            @TempData["basari"]
+        </div>
+    </div>
+}
+<h1 class="col-md-12 col-sm-12 text-center">Kayıt Ol</h1>
+
+<hr />
+<div class="col-md-4 mx-auto text-center">
+    <form asp-action="KayitOl">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="UserName" class="control-label"></label>
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserSurname" class="control-label"></label>
+            <input asp-for="UserSurname" class="form-control" />
+            <span asp-validation-for="UserSurname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EMail" class="control-label"></label>
+            <input asp-for="EMail" class="form-control" />
+            <span asp-validation-for="EMail" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password" class="control-label"></label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PasswordConfirmed" class="control-label"></label>
+            <input asp-for="PasswordConfirmed" class="form-control" />
+            <span asp-validation-for="PasswordConfirmed" class="text-danger"></span>
+        </div>
+        <div class="form-group text-center">
+            <input type="submit" value="Kayıt Ol" class="btn btn-success" />
+        </div>
+    </form>
+    <hr/>
+    <a asp-controller="Account" asp-action="Login" class="badge badge-light"> Girişe Geri Dön...</a>
+</div>
+
+

@@ -6,8 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PersonelFollow.Core.Abstract;
+using PersonelFollow.Core.Concrete.EntityFramework;
+using PersonelFollow.WebUI.Filter;
+using PersonelFollow.WebUI.Middlewares;
+using PersonelFollow.WebUI.Services.Session;
 
 namespace PersonelFollow.WebUI
 {
@@ -29,8 +35,16 @@ namespace PersonelFollow.WebUI
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+            services.AddTransient<LoginFilter>();
+            services.AddDbContext<DataContext>(options =>
+                options.UseSqlServer(@"Server=Eness;Database=PersonelTracking;Trusted_Connection=true", b => b.MigrationsAssembly("PersonelFollow.WebUI")));
+            services.AddTransient<IActiviyRepository, EfActivityRepository>();
+            services.AddTransient<IMyActivityFollowRepository, EfMyActivityRepository>();
+            services.AddTransient<IUserRepository, EfUserRepository>();
+            services.AddTransient<ISessionService, SessionService>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -46,14 +60,18 @@ namespace PersonelFollow.WebUI
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseSession();
+            app.UseStatusCodePages();
+            app.UseFileServer();
+            app.UseNodeModules(env.ContentRootPath);
             app.UseCookiePolicy();
-
+            SeedData.Seed(app);
             app.UseMvc(routes =>
             {
+
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Account}/{action=Aktivitelerim}/{id?}");
             });
         }
     }

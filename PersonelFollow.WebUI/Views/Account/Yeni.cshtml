@@ -1,0 +1,51 @@
+﻿@model PersonelFollow.WebUI.Models.NewAndEditActivityViewModel
+
+@{
+    ViewData["Title"] = "Yeni";
+}
+@if (TempData["hata"] != null)
+{
+    <div class="col-md-12 col-sm-12 text-center">
+        <div class="alert alert-danger">
+            @TempData["hata"]
+        </div>
+    </div>
+}
+@if (TempData["basari"] != null)
+{
+    <div class="col-md-12 col-sm-12 text-center">
+        <div class="alert alert-success">
+            @TempData["basari"]
+        </div>
+    </div>
+}
+<div class="col-md-12 col-sm-12 text-center">
+    <h1>Yeni Aktivite</h1>
+
+    <hr />
+    <form asp-action="Yeni">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ActivityName" class="control-label"></label>
+            <input asp-for="ActivityName" class="form-control col-md-4 mx-auto" />
+            <span asp-validation-for="ActivityName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="IsNumeric">@Html.DisplayNameFor(Model => Model.IsNumeric)</label>
+            <select asp-for="IsNumeric" asp-items="@ViewBag.aktiviteTuruSelect" class="form-control col-md-4 mx-auto"></select>
+        </div>
+        @*<div class="form-group">
+                <label for="IsActive">@Html.DisplayNameFor(Model => Model.IsActive)</label>
+                <select asp-for="IsActive" asp-items="@ViewBag.aktiflikDurumu" class="form-control col-md-4 mx-auto"></select>
+            </div>*@
+        <div class="form-group">
+            <input type="submit" value="Oluştur" class="btn btn-primary" />
+        </div>
+    </form>
+
+    <div>
+        <a asp-action="AktiviteListem">Aktivite Listesine Geri Dön</a>
+    </div>
+</div>
+

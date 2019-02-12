@@ -1,0 +1,35 @@
+﻿@model PersonelFollow.WebUI.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Giris";
+}
+
+<div class="col-md-12 col-sm-12 text-center">
+    <h1>Giriş</h1>
+
+    <hr />
+    <form asp-action="Giris">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="EMail" class="control-label"></label>
+            <input asp-for="EMail" class="form-control col-md-4 mx-auto" />
+            <span asp-validation-for="EMail" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password" class="control-label"></label>
+            <input asp-for="Password" class="form-control col-md-4  mx-auto" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary mx-auto" />
+        </div>
+    </form>
+</div>
+@if (@TempData["hata"] != null)
+{
+    <div class="col-md-12 col-xs-12">
+        <div class="alert alert-danger text-center">
+            @TempData["hata"].ToString()
+        </div>
+    </div>
+}

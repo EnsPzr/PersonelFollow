@@ -1,0 +1,74 @@
+﻿@model List<PersonelFollow.WebUI.Models.ActivitiesViewModel>
+@{
+    ViewData["Title"] = "Aktivitelerim";
+}
+@if (TempData["hata"] != null)
+{
+    <div class="col-md-12 col-sm-12 text-center">
+        <div class="alert alert-danger">
+            @TempData["hata"]
+        </div>
+    </div>
+}
+@if (TempData["basari"] != null)
+{
+    <div class="col-md-12 col-sm-12 text-center">
+        <div class="alert alert-success">
+            @TempData["basari"]
+        </div>
+    </div>
+}
+<div class="col-md-12 col-sm-12">
+    <h1 class="text-center">
+        Aktivitelerim : <form asp-controller="Account" asp-action="Aktivitelerim" method="get">
+            <input type="date" value="@ViewBag.activityDate" name="date" class="form-control text-center mt-1 mx-auto col-md-4 inline-block" id="activityDate" />
+        </form>
+    </h1>
+
+    <p>
+        <a asp-action="Yeni">Yeni Aktivite</a>
+    </p>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    <b>Aktivite Adı</b>
+                </th>
+                <th>
+                    <b>Yapıldı, Yapılmadı veya kaç kere Yapıldığı</b>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <form asp-controller="Account" asp-action="GunlukAktiviteGuncelle" method="post">
+            @Html.AntiForgeryToken()
+            <input name="date" type="hidden" value="@ViewBag.activityDate"/>
+            <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <td>
+                        @Html.Hidden("[" + @i + "].DailyActivityId", Model[i].DailyActivityId)
+                        @Html.DisplayFor(modelItem => Model[i].ActivityName)
+                    </td>
+                    <td>
+                        @if (Model[i].isNumeric)
+                        {
+                            @Html.TextBoxFor(modelItem => Model[i].NumberOfActivity, new {@class = "form-control", type = "number"})
+                        }
+                        else
+                        {
+                            @Html.DropDownList("[" + @i + "].NumberOfActivity", new SelectList((List<SelectListItem>) ViewBag.yapildiYapilmadiSelect, "Value", "Text", Model[i].NumberOfActivity), new {@class = "form-control"})
+                        }
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="2">
+                    <button type="submit" class="btn btn-success col-md-12 col-sm-12 text-center">Kaydet</button>
+                </td>
+            </tr>
+            </tbody>
+        </form>
+    </table>
+</div>
